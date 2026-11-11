@@ -136,7 +136,6 @@ def estimate_params(snaps):
     t_end = parse_time(snaps[-1]["at"])
     last_chart = {r["universe_id"]: (r["rank"], r.get("name") or "")
                   for r in snaps[-1]["up_and_coming"]}
-    mean_a = sum(-math.log(r) for r, _ in last_chart.values()) / len(last_chart)
 
     t_start = t_end - timedelta(hours=DRIFT_WINDOW_HOURS)
     g_start = t_end - timedelta(hours=GPLAY_WINDOW_HOURS)
@@ -172,9 +171,7 @@ def estimate_params(snaps):
         "drifts": drifts,
         "entry_rate": entry_rate,
         "entry_ranks": sorted(entry_ranks) or [80, 87, 90, 95, 97],
-        "chart_mean_a": mean_a,
         "last_chart": last_chart,
-        "t_end": t_end,
     }
 
 
