@@ -64,6 +64,12 @@ DRIFT_WINDOW_HOURS = 96.0
 GPLAY_WINDOW_HOURS = 30.0
 DRIFT_SHRINK_K = 2.0     # slope *= n / (n + k)
 DRIFT_CAP = 0.030        # |appeal slope| per hour, capped
+# Regression drift: OLS on 3,650 consecutive-pair transitions from the
+# archive (R^2 = 0.125). E[da/h] = REG_CONST + REG_SLOPE * appeal slope
+# (trailing 96 h, capped +-0.03, shrunk n/(n+2)) + REG_GPLAY * log-playing
+# slope (trailing 30 h, clipped +-0.05) + REG_LOG_RANK * log(rank)
+# + REG_LOG_AGE * log(chart-age in hours). Residual sd/h by rank band:
+# 1-3: 0.070, 4-10: 0.045, 11-30: 0.040, 31+: 0.028.
 REG_SCALE = 1.2          # regression drift is shrunk; 1.2 fits best
 REG_CONST = -0.038
 REG_SLOPE = 0.43
